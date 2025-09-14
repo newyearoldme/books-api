@@ -16,16 +16,16 @@ async def create_book(book_data: BookCreate, db: Annotated[AsyncSession, Depends
 async def read_books(db: Annotated[AsyncSession, Depends(get_db)], skip: int = 0, limit: int = 100):
     return await book_crud.get_all(db, skip, limit)
 
+@router.get("/top_rated", response_model=list[Book])
+async def get_top_books(db: Annotated[AsyncSession, Depends(get_db)], limit: int = 10):
+    return await book_crud.get_top_rated(db, limit)
+
 @router.get("/{book_id}", response_model=Book)
 async def read_book(book_id: int, db: Annotated[AsyncSession, Depends(get_db)]):
     db_book = await book_crud.get(db, book_id)
     if not db_book:
         raise HTTPException(status_code=404, detail="Book not found")
     return db_book
-
-@router.get("/top_rated", response_model=list[Book])
-async def get_top_books(db: Annotated[AsyncSession, Depends(get_db)], limit: int = 10):
-    return await book_crud.get_top_rated(db, limit)
 
 @router.put("/{book_id}", response_model=Book)
 async def update_book(book_id: int, book_data: BookUpdate, db: Annotated[AsyncSession, Depends(get_db)]):
