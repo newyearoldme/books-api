@@ -49,4 +49,4 @@ jobs:
         POSTGRES_DB: test_db
         SECRET_KEY: test-secret-key
       run: |
-        pytest -v --tb=short
+        poetry run pytest -v --tb=short
