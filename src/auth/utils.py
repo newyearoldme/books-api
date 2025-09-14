@@ -21,9 +21,7 @@ def create_access_token(data: dict) -> str:
 
 def verify_token(token: str):
     try:
-        print(f"Verifying token: {token}")  # ✅
         payload = jwt.decode(token, auth_config.SECRET_KEY, algorithms=[auth_config.ALGORITHM])
-        print(payload)
         return payload
     except JWTError:
         return None

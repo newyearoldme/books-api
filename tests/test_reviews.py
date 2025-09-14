@@ -28,7 +28,7 @@ async def test_get_review_by_book(async_client, test_user, auth_token, test_book
     for review_data in reviews_data:
         await async_client.post("/reviews/", json=review_data, headers={"Authorization": f"Bearer {auth_token}"})
 
-    response = await async_client.get(f"/reviews/book/{test_book["id"]}")
+    response = await async_client.get(f"/reviews/book/{test_book['id']}")
 
     assert response.status_code == 200
     assert len(response.json()) == 2
@@ -41,7 +41,7 @@ async def test_get_reviews_by_user(async_client, test_user, auth_token, test_boo
     review_data = {"text": "Good", "rating": 4, "book_id": test_book["id"]}
     await async_client.post("/reviews/", json=review_data, headers={"Authorization": f"Bearer {auth_token}"})
 
-    response = await async_client.get(f"/reviews/user/{test_user["id"]}")
+    response = await async_client.get(f"/reviews/user/{test_user['id']}")
 
     assert response.status_code == 200
     assert len(response.json()) == 1
@@ -58,7 +58,7 @@ async def test_get_average_rating(async_client, auth_token, test_book):
     for review_data in reviews_data:
         await async_client.post("/reviews/", json=review_data, headers={"Authorization": f"Bearer {auth_token}"})
 
-    response = await async_client.get(f"/reviews/{test_book["id"]}/average_rating")
+    response = await async_client.get(f"/reviews/{test_book['id']}/average_rating")
 
     assert response.status_code == 200
     assert response.json() == 4.0   # (3 + 4 + 5) / 3 == 4
