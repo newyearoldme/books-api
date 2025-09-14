@@ -66,7 +66,7 @@ uvicorn src.main:app --reload
 
 ## Эндпоинты
 ### Auth
-- POST /auth/login — аутентификация пользователя
+- `POST /auth/login` — аутентификация пользователя
 
 ### Books
 - `POST /books/` — создание новой книги
