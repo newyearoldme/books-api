@@ -5,7 +5,7 @@ description = ""
 authors = []
 license = {text = "MIT"}
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
     "fastapi (>=0.116.1,<0.117.0)",
     "sqlalchemy (>=2.0.43,<3.0.0)",
