@@ -69,32 +69,38 @@ uvicorn src.main:app --reload
 - `POST /auth/login` — аутентификация пользователя
 
 ### Books
-- `POST /books/` — создание новой книги
-- `GET /books/` — получение всех книг
+- `POST /books` — создание новой книги
+- `GET /books` — получение всех книг
 - `GET /books/{book_id}` — получение конкретной книги по ID
 - `GET /books/top_rated` — получение наиболее популярной книги по рейтингу
 - `PUT /books/{book_id}` — обновление данных книги
 - `DELETE /books/{book_id}` — удаление книги
 
+### Favorites
+- `POST /favorites/books/{book_id}` — добавление книги в избранное
+- `DELETE /favorites/books/{book_id}` — удаление книги с избранного
+- `GET /favorites/me` — получение списка избранного текущего пользователя
+- `GET /favorites/books/{book_id}/status` — проверка, есть ли книга в избранном
+
 ### Review
-- `POST /reviews/` — создание отзыва к книге
-- `GET /reviews/` — получение всех отзывов
-- `GET /reviews/book/{book_id}/` — получение отзывов конкретной книги по ID
-- `GET /reviews/user/{user_id}/` — получение отзывов конкретного пользователя по ID
-- `GET /reviews/{review_id}/` — получение отзыва
-- `DELETE /reviews/{review_id}/` — удаление отзыва
-- `PUT /reviews/{review_id}/` — обновление отзыва
+- `POST /reviews` — создание отзыва к книге
+- `GET /reviews` — получение всех отзывов
+- `GET /reviews/book/{book_id}` — получение отзывов конкретной книги по ID
+- `GET /reviews/user/{user_id}` — получение отзывов конкретного пользователя по ID
+- `GET /reviews/{review_id}` — получение отзыва
+- `DELETE /reviews/{review_id}` — удаление отзыва
+- `PUT /reviews/{review_id}` — обновление отзыва
 - `GET /reviews/{book_id}/average_rating` — получение среднего рейтинга книги
 
 ### Users
-- `POST /users/` — регистрация нового пользователя
-- `GET /users/me/` — получение текущего пользователя
-- `GET /users/` — список всех пользователей
-- `GET /users/{user_id}/` — получение пользователя по ID
-- `GET /users/by_email/{email}/` — получение пользователя по электронной почте
-- `GET /users/by_username/{username}/` — получение пользователя по имени
-- `PUT /users/{user_id}/` — обновление данных пользователя
-- `DELETE /users/{user_id}/` — удаление пользователя по ID
+- `POST /users` — регистрация нового пользователя
+- `GET /users/me` — получение текущего пользователя
+- `GET /users` — список всех пользователей
+- `GET /users/{user_id}` — получение пользователя по ID
+- `GET /users/by_email/{email}` — получение пользователя по электронной почте
+- `GET /users/by_username/{username}` — получение пользователя по имени
+- `PUT /users/{user_id}` — обновление данных пользователя
+- `DELETE /users/{user_id}` — удаление пользователя по ID
 
 ## Тесты
 Тесты покрывают все основные CRUD операции. Запуск происходит через
