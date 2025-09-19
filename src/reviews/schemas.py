@@ -14,6 +14,9 @@ class ReviewBase(BaseModel):
 class ReviewCreate(ReviewBase):
     book_id: int = Field(..., examples=[1])
 
+class ReviewUpdate(ReviewBase):
+    pass
+
 class Review(ReviewBase):
     id: int
     user_id: int

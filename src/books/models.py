@@ -6,6 +6,7 @@ from src.shared.database import Base
 
 if TYPE_CHECKING:
     from src.reviews.models import ReviewModel
+    from src.favorites.models import FavoriteModel
 
 class BookModel(Base):
     __tablename__ = "books"
@@ -17,6 +18,7 @@ class BookModel(Base):
     rating: Mapped[float | None] = mapped_column(default=0.0)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False, index=True)
 
+    favorited_by: Mapped["FavoriteModel"] = relationship(back_populates="book", cascade="all, delete-orphan")
     reviews: Mapped[list["ReviewModel"]] = relationship(
         back_populates="book",
         cascade="all, delete-orphan",

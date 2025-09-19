@@ -2,17 +2,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 
 from src.reviews.models import ReviewModel
-from src.reviews.schemas import ReviewCreate
+from src.reviews.schemas import ReviewCreate, ReviewUpdate
 from src.shared.crud_base import CRUDBase
 
 
-class CRUDReviews(CRUDBase[ReviewModel, ReviewCreate, ReviewCreate]): # Update = Create  
-    async def create(self, db: AsyncSession, obj_in: int) -> ReviewModel:
-        if isinstance(obj_in, dict):
-            db_obj = ReviewModel(**obj_in)
-        else:
-            db_obj = ReviewModel(**obj_in.model_dump())
-        
+class CRUDReviews(CRUDBase[ReviewModel, ReviewCreate, ReviewUpdate]):
+    async def create(self, db: AsyncSession, obj_in: ReviewCreate | dict) -> ReviewModel:
+        data = obj_in.model_dump() if not isinstance(obj_in, dict) else obj_in
+        db_obj = ReviewModel(**data)
         db.add(db_obj)
         await db.commit()
         await db.refresh(db_obj)

@@ -23,7 +23,7 @@ class CRUDBase(Generic[ModelType, CreateShcemaType, UpdateShcemaType]):
         result = await db.execute(select(self.model).where(self.model.id == id))
         return result.scalar_one_or_none()
     
-    async def get_all(self, db: AsyncSession, skip: int = 0, limit: int = 100) -> list[ModelType]:
+    async def get_all(self, db: AsyncSession, skip: int, limit: int) -> list[ModelType]:
         result = await db.execute(select(self.model).offset(skip).limit(limit))
         return result.scalars().all()
 

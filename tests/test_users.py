@@ -18,7 +18,7 @@ async def test_create_user(async_client):
 
 @pytest.mark.asyncio
 async def test_create_duplicate_username(async_client):
-    """Тест создания пользователя с существующим username"""
+    """Тест создания пользователя с существующим именем"""
     user_data = {
         "username": "duplicate",
         "email": "test1@example.com",
@@ -34,12 +34,12 @@ async def test_create_duplicate_username(async_client):
     }
     response = await async_client.post("/users/", json=duplicate_data)
     
-    assert response.status_code == 400
+    assert response.status_code == 409
     assert "username" in response.json()["detail"].lower()
 
 @pytest.mark.asyncio
 async def test_create_duplicate_email(async_client):
-    """Тест создания пользователя с существующей email"""
+    """Тест создания пользователя с существующей электронной почтой"""
     user_data = {
         "username": "testuser1",
         "email": "duplicate@example.com",
@@ -55,7 +55,7 @@ async def test_create_duplicate_email(async_client):
     }
     response = await async_client.post("/users/", json=duplicate_data)
     
-    assert response.status_code == 400
+    assert response.status_code == 409
     assert "email" in response.json()["detail"].lower()
 
 @pytest.mark.asyncio

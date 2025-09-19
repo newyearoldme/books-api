@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Annotated
 
 from src.shared.database import get_db
+from src.shared.exceptions import UnauthorizedException
 from src.users.crud import user as user_crud
 from src.auth.schemas import LoginRequestSchema
 from src.auth.utils import create_access_token
@@ -10,14 +11,40 @@ from src.auth.utils import create_access_token
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
-@router.post("/login")
+@router.post(
+    "/login",
+    summary="User login",
+    responses={
+        200: {"description": "Successful login"},
+        400: {"description": "Invalid credentials: incorrect username or password"},
+        422: {"description": "Validation error"}
+    }
+)
 async def login(login_data: LoginRequestSchema, db: Annotated[AsyncSession, Depends(get_db)]):
+    """
+    ## Authenticate user and return JWT access token.
+
+    This endpoint validates user credentials and returns a JSON Web Token
+    that should be included in subsequent requests in the Authorization header.
+    
+    **Request body:**
+    - **username**: User's username (required)
+    - **password**: User's password (required)
+    
+    **Response:**
+    - **access_token**: JWT token for authenticated requests
+    - **token_type**: Always "bearer"
+    - **user_id**: ID of the authenticated user
+    - **username**: Username of the authenticated user
+    
+    **Security:**
+    - Passwords are hashed using bcrypt
+    - JWT tokens expire after 30 minutes (by default)
+    - Tokens must be included in Authorization header: `Bearer <token>`
+    """
     user = await user_crud.authenticate(db, login_data.username, login_data.password)
     if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect username or password"
-        )
+        raise UnauthorizedException(detail="Incorrect username or password")
 
     access_token = create_access_token(data={"sub": str(user.id)})
 
