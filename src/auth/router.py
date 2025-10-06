@@ -1,15 +1,13 @@
-from fastapi import APIRouter, Depends, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Annotated
+from fastapi import APIRouter
 
-from src.shared.database import get_db
-from src.shared.exceptions import UnauthorizedException
-from src.users.crud import user as user_crud
 from src.auth.schemas import LoginRequestSchema
 from src.auth.utils import create_access_token
-
+from src.shared.database import DatabaseDep
+from src.shared.exceptions import UnauthorizedException
+from src.users.crud import user as user_crud
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
+
 
 @router.post(
     "/login",
@@ -17,26 +15,26 @@ router = APIRouter(prefix="/auth", tags=["Authentication"])
     responses={
         200: {"description": "Successful login"},
         400: {"description": "Invalid credentials: incorrect username or password"},
-        422: {"description": "Validation error"}
-    }
+        422: {"description": "Validation error"},
+    },
 )
-async def login(login_data: LoginRequestSchema, db: Annotated[AsyncSession, Depends(get_db)]):
+async def login(login_data: LoginRequestSchema, db: DatabaseDep):
     """
     ## Authenticate user and return JWT access token.
 
     This endpoint validates user credentials and returns a JSON Web Token
     that should be included in subsequent requests in the Authorization header.
-    
+
     **Request body:**
     - **username**: User's username (required)
     - **password**: User's password (required)
-    
+
     **Response:**
     - **access_token**: JWT token for authenticated requests
     - **token_type**: Always "bearer"
     - **user_id**: ID of the authenticated user
     - **username**: Username of the authenticated user
-    
+
     **Security:**
     - Passwords are hashed using bcrypt
     - JWT tokens expire after 30 minutes (by default)
@@ -52,5 +50,5 @@ async def login(login_data: LoginRequestSchema, db: Annotated[AsyncSession, Depe
         "access_token": access_token,
         "token_type": "bearer",
         "user_id": user.id,
-        "username": user.username
+        "username": user.username,
     }

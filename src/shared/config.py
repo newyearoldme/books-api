@@ -1,5 +1,6 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class Settings(BaseSettings):
     POSTGRES_HOST: str = Field(default="localhost")
@@ -20,9 +21,8 @@ class Settings(BaseSettings):
             return f"sqlite+aiosqlite:///{self.SQLITE_DB_PATH}"
 
     model_config = SettingsConfigDict(
-        env_file=".env",
-        env_file_encoding="utf-8",
-        extra="ignore"
+        env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )
+
 
 settings = Settings()

@@ -1,18 +1,15 @@
 """initial_tables
 
 Revision ID: 4c0750c1853b
-Revises: 
+Revises:
 Create Date: 2025-09-14 21:38:06.855824
 
 """
+
 from typing import Sequence, Union
 
-from alembic import op
-import sqlalchemy as sa
-
-
 # revision identifiers, used by Alembic.
-revision: str = '4c0750c1853b'
+revision: str = "4c0750c1853b"
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
